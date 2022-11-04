@@ -11,6 +11,7 @@ function onReady() {
     $('.operation-btn').click(setOperator);
     $('#equals-btn').click(sendCalculationData);
     $('#clear-btn').click(clearCalculationData);
+    $('#clear-history-btn').click(clearCalculationDataHistory);
     getCalculationData();
 }
 
@@ -40,8 +41,7 @@ function sendCalculationData () { // build and send object to server
         url: '/calculations',
         data: calculationData
     }).then(function(response){
-        $('#first-number-input').val('');
-        $('#second-number-input').val('');
+        clearCalculationData();
         getCalculationData ();
     }).catch(function(error){
         alert('failed post', error)
@@ -61,6 +61,11 @@ function getCalculationData () {
 }
 
 function clearCalculationData () {
+    $('#first-number-input').val('');
+    $('#second-number-input').val('');
+}
+
+function clearCalculationDataHistory () {
     // console.log('in clearCalculationData');
     $.ajax({
         method: 'DELETE',
