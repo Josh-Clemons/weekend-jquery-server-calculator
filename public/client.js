@@ -3,7 +3,8 @@ $(document).ready(onReady);
 let operator = '';
 let inputNumberOne = 0;
 let inputNumberTwo = 0;
-let newCalculationCheck = false;
+let newCalculationCheck = true;
+let newRefresh = true;
 
 
 
@@ -14,7 +15,9 @@ function onReady() {
     $('#clear-btn').click(clearCalculationData);
     $('.number-btn').click(updateScreen);
     $('#clear-history-btn').click(clearCalculationDataHistory);
+    updateScreen();
     getCalculationData();
+    
 }
 
 
@@ -24,32 +27,39 @@ function onReady() {
 // send to server as object
 // receive calculation and history from server
 // render to DOM
-// clear history from 
-
-function removeElement() {
-    $(this).remove();
-};
+// clear history
 
 function updateScreen () {
-    if (newCalculationCheck) {
+    if (newCalculationCheck) { // sets calculator screen to 0 on page refresh or when a new calculation is started
         $('#calculator-screen').text('');
         newCalculationCheck = false;
+        inputNumberOne = '';
+        inputNumberTwo = '';
+        operator = '';
     }
+
+    if (operator !== '' && inputNumberOne === '') {
+        inputNumberOne = $('#calculator-screen').text();
+    }
+    
+    if (inputNumberOne !== '') {
+        inputNumberTwo += $(this).text();
+    }
+
     $('#calculator-screen').append($(this).text());
 }
 
 function setOperator () {
-    // console.log('in setOperator', $(this).attr('id') );
     operator = $(this).text();
-    inputNumberOne = $('#calculator-screen').text();
-    // console.log('input one in set operator', inputNumberOne);
-    $('#calculator-screen').text('');
+    updateScreen();
+    $('#calculator-screen').append($(this).text());
+
 };
 
 function sendCalculationData () { // build and send object to server
     let calculationData = {
         numberOne: Number(inputNumberOne),
-        numberTwo: Number($('#calculator-screen').text()),
+        numberTwo: Number(inputNumberTwo),
         operator: operator
     }
     $.ajax({
@@ -96,8 +106,12 @@ function clearCalculationDataHistory () {
 function render (calc) {
     // console.log('calc.calculation in render', calc.calculation);
     $('#calculator-screen').empty();
-    $('#calculator-screen').append(`${calc.calculation}`);
-
+    if (newRefresh){
+        $('#calculator-screen').text('0');
+        newRefresh = false;
+    } else {
+        $('#calculator-screen').append(`=${calc.calculation}`);
+    }
     $('#calculation-history-list').empty();
     for (i=calc.history.length-1; i>=0; i--) {
         $('#calculation-history-list').append(`
