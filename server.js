@@ -11,7 +11,7 @@ let calculation = 0;
 
 app.post ('/calculations' , (req, res) => {
     calculation = calculateValue(req.body);
-    let equation = `${req.body.numberOne} ${req.body.operator} ${req.body.numberTwo} = ${calculation}`;
+    let equation = `${req.body.numberOne}${req.body.operator}${req.body.numberTwo} = ${calculation}`;
     calculationHistory.push(equation);
     res.sendStatus(200);
 });

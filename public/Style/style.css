@@ -24,17 +24,18 @@ button {
     align-items: center;
 }
 
-#calculator-screen {
-    width: 162px;
-    height: 22px;
+div#calculator-screen {
+    width: 142px;
+    height: 35px;
     margin-left: 5px;
     border: 1px solid black;
     padding: 3px;
+    overflow: scroll;
 }
 
 #clear-btn {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 43px;
     margin: 5px;
     margin-left: 0px;
 }
@@ -48,5 +49,6 @@ button {
 }
 
 #clear-history-btn {
-    width: auto;
+    width: 150px;
+    height: 20px;
 }
