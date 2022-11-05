@@ -1,0 +1,12 @@
+#calculator-div {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+#calculator-div .calculator-btn {
+    width: 150px;
+    height: 150px;
+}

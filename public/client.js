@@ -3,14 +3,16 @@ $(document).ready(onReady);
 let operator = '';
 let inputNumberOne = 0;
 let inputNumberTwo = 0;
+let newCalculationCheck = false;
 
 
 
 function onReady() {
     // console.log('we have jquery');
     $('.operation-btn').click(setOperator);
-    $('#equals-btn').click(sendCalculationData);
+    $('#equals-btn-two').click(sendCalculationData);
     $('#clear-btn').click(clearCalculationData);
+    $('.number-btn').click(updateScreen);
     $('#clear-history-btn').click(clearCalculationDataHistory);
     getCalculationData();
 }
@@ -24,16 +26,30 @@ function onReady() {
 // render to DOM
 // clear history from 
 
+function removeElement() {
+    $(this).remove();
+};
+
+function updateScreen () {
+    if (newCalculationCheck) {
+        $('#calculator-screen').text('');
+        newCalculationCheck = false;
+    }
+    $('#calculator-screen').append($(this).text());
+}
 
 function setOperator () {
     // console.log('in setOperator', $(this).attr('id') );
     operator = $(this).text();
+    inputNumberOne = $('#calculator-screen').text();
+    // console.log('input one in set operator', inputNumberOne);
+    $('#calculator-screen').text('');
 };
 
 function sendCalculationData () { // build and send object to server
     let calculationData = {
-        numberOne: $('#first-number-input').val(),
-        numberTwo: $('#second-number-input').val(),
+        numberOne: Number(inputNumberOne),
+        numberTwo: Number($('#calculator-screen').text()),
         operator: operator
     }
     $.ajax({
@@ -58,12 +74,12 @@ function getCalculationData () {
     }).catch(function(error) {
         alert('error running getcalculationdata', error);
     });
-}
+};
 
 function clearCalculationData () {
     $('#first-number-input').val('');
     $('#second-number-input').val('');
-}
+};
 
 function clearCalculationDataHistory () {
     // console.log('in clearCalculationData');
@@ -75,17 +91,18 @@ function clearCalculationDataHistory () {
     }).catch(function(error){
         alert('failed clearcalculationdatta', error);
     });
-}
+};
 
 function render (calc) {
     // console.log('calc.calculation in render', calc.calculation);
-    $('#calculated-value').empty();
-    $('#calculated-value').append(`Total: ${calc.calculation}`);
+    $('#calculator-screen').empty();
+    $('#calculator-screen').append(`${calc.calculation}`);
 
     $('#calculation-history-list').empty();
     for (i=calc.history.length-1; i>=0; i--) {
         $('#calculation-history-list').append(`
-            <li>${calc.history[i]}</li>
+                <li data-id="${i}">${calc.history[i]}</li>
         `);
-    }
-}
+    };
+    newCalculationCheck = true;
+};

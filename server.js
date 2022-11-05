@@ -15,6 +15,7 @@ let calculation = 0;
 // send calculation and history to client
 
 
+
 app.post ('/calculations' , (req, res) => {
     calculation = calculateValue(req.body);
     let equation = `${req.body.numberOne} ${req.body.operator} ${req.body.numberTwo} = ${calculation}`;
@@ -38,13 +39,13 @@ app.delete('/calculations', (req, res) => {
 
 function calculateValue (calc) {
     let answer = 0;
-    console.log('operation being passed' , calc.operator);
+    // console.log('operation being passed' , calc.operator);
     switch (calc.operator) {
         case ('-') : 
             answer = Number(calc.numberOne) - Number(calc.numberTwo);
             break;
         case ('+') :
-            console.log('in plus button switch');
+            // console.log('in plus button switch');
             answer = Number(calc.numberOne) + Number(calc.numberTwo);
             break;
         case ('/') :
@@ -59,4 +60,4 @@ function calculateValue (calc) {
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT);
-})
+});
