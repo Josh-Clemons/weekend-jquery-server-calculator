@@ -5,7 +5,7 @@ let inputNumberOne = 0;
 let inputNumberTwo = 0;
 let newCalculationCheck = true;
 let newRefresh = true;
-
+let calc = {};
 
 
 function onReady() {
@@ -15,21 +15,13 @@ function onReady() {
     $('#clear-btn').click(clearCalculationData);
     $('.number-btn').click(updateScreen);
     $('#clear-history-btn').click(clearCalculationDataHistory);
+    $('#calculation-history-list').on('click', 'li', rerunCalc);
     updateScreen();
     getCalculationData();
     
 }
 
-
-// TASKS FOR CLIENT SIDE:
-// Gather input 1 and 2
-// gather operator
-// send to server as object
-// receive calculation and history from server
-// render to DOM
-// clear history
-
-function updateScreen () {
+function updateScreen () { // updates calculator screen and sets input numbers to a variable
     if (newCalculationCheck) { // sets calculator screen to 0 on page refresh or when a new calculation is started
         $('#calculator-screen').text('');
         newCalculationCheck = false;
@@ -49,14 +41,25 @@ function updateScreen () {
     $('#calculator-screen').append($(this).text());
 }
 
-function setOperator () {
-    operator = $(this).text();
-    updateScreen();
-    $('#calculator-screen').append($(this).text());
-
+function setOperator () { // sets operator value for use in switch case on server side
+    if (operator === ''){
+        operator = $(this).text();
+        updateScreen();
+        $('#calculator-screen').append($(this).text());
+    }
 };
 
 function sendCalculationData () { // build and send object to server
+
+    if (inputNumberOne === '' || operator === '' || inputNumberTwo === '') {
+        alert('Missing calculation data!')
+        return;
+    } else if (isNaN(inputNumberOne) || isNaN(inputNumberTwo)){
+        alert('One of your numbers is wrong!');
+        return;
+    };
+    
+    
     let calculationData = {
         numberOne: Number(inputNumberOne),
         numberTwo: Number(inputNumberTwo),
@@ -74,12 +77,13 @@ function sendCalculationData () { // build and send object to server
     });
 };
 
-function getCalculationData () {
+function getCalculationData () { // gets calculation data from server then sends to render
     $.ajax({
         method: 'GET',
         url: '/calculations'
     }).then(function (response) {
         // console.log(response);
+        calc = response;
         render(response);
     }).catch(function(error) {
         alert('error running getcalculationdata', error);
@@ -87,12 +91,13 @@ function getCalculationData () {
 };
 
 function clearCalculationData () {
-    $('#first-number-input').val('');
-    $('#second-number-input').val('');
+    newCalculationCheck = true;
+    updateScreen();
+    calc.calculation = '0';
+    render(calc);
 };
 
 function clearCalculationDataHistory () {
-    // console.log('in clearCalculationData');
     $.ajax({
         method: 'DELETE',
         url: '/calculations'
@@ -102,6 +107,13 @@ function clearCalculationDataHistory () {
         alert('failed clearcalculationdatta', error);
     });
 };
+
+function rerunCalc () { // displays calc history item on calculator screen when clicked
+    newCalculationCheck = true;
+    $('#calculator-screen').empty();
+    $('#calculator-screen').append($(this).text());
+};
+
 
 function render (calc) {
     // console.log('calc.calculation in render', calc.calculation);
