@@ -1,12 +1,52 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+}
+
 #calculator-div {
-    width: 100px;
+    width: 200px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
-#calculator-div .calculator-btn {
-    width: 150px;
-    height: 150px;
+#calc-top-row-div {
+    margin: -5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#calculator-screen {
+    width: 162px;
+    height: 22px;
+    margin-left: 5px;
+    border: 1px solid black;
+    padding: 3px;
+}
+
+#clear-btn {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    margin-left: 0px;
+}
+
+#zero-btn {
+    width: 100px;
+}
+
+#equals-btn-two {
+    width: 200px;
+}
+
+#clear-history-btn {
+    width: auto;
 }

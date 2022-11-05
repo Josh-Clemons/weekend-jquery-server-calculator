@@ -1,8 +1,8 @@
 $(document).ready(onReady);
 
 let operator = '';
-let inputNumberOne = 0;
-let inputNumberTwo = 0;
+let inputNumberOne = '0';
+let inputNumberTwo = '0';
 let newCalculationCheck = true;
 let newRefresh = true;
 let calc = {};
@@ -42,7 +42,7 @@ function updateScreen () { // updates calculator screen and sets input numbers t
 }
 
 function setOperator () { // sets operator value for use in switch case on server side
-    if (operator === ''){
+    if (operator === ''){ // only sets operator on first click
         operator = $(this).text();
         updateScreen();
         $('#calculator-screen').append($(this).text());
@@ -90,14 +90,14 @@ function getCalculationData () { // gets calculation data from server then sends
     });
 };
 
-function clearCalculationData () {
+function clearCalculationData () { // clears calculator screen when 'C' is clicked
     newCalculationCheck = true;
     updateScreen();
     calc.calculation = '0';
     render(calc);
 };
 
-function clearCalculationDataHistory () {
+function clearCalculationDataHistory () { //server call to delete history data
     $.ajax({
         method: 'DELETE',
         url: '/calculations'
@@ -118,11 +118,11 @@ function rerunCalc () { // displays calc history item on calculator screen when 
 function render (calc) {
     // console.log('calc.calculation in render', calc.calculation);
     $('#calculator-screen').empty();
-    if (newRefresh){
-        $('#calculator-screen').text('0');
+    if (newRefresh || calc.calculation === '0' || !(calc.calculation) ){
+        $('#calculator-screen').text('= 0');
         newRefresh = false;
-    } else {
-        $('#calculator-screen').append(`=${calc.calculation}`);
+    } else if (calc.history) {
+        $('#calculator-screen').append(`${calc.history[calc.history.length-1]}`);
     }
     $('#calculation-history-list').empty();
     for (i=calc.history.length-1; i>=0; i--) {
