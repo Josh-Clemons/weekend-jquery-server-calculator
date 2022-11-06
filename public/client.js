@@ -30,6 +30,7 @@ function updateScreen () { // updates calculator screen and sets input numbers t
         operator = '';
     }
 
+    //the below if statements are used in-lieu of clearing the calculator display, in order to match the stretch goal graphic
     if (operator !== '' && inputNumberOne === '') {
         inputNumberOne = $('#calculator-screen').text();
     }
@@ -115,19 +116,19 @@ function rerunCalc () { // displays calc history item on calculator screen when 
 };
 
 
-function render (calc) {
+function render (res) {
     // console.log('calc.calculation in render', calc.calculation);
     $('#calculator-screen').empty();
-    if (newRefresh || calc.calculation === '0' || !(calc.calculation) ){
+    if (newRefresh || res.calculation === '0' || !(res.calculation) ){
         $('#calculator-screen').text('= 0');
         newRefresh = false;
-    } else if (calc.history) {
-        $('#calculator-screen').append(`${calc.history[calc.history.length-1]}`);
+    } else if (res.history) {
+        $('#calculator-screen').append(`${res.history[res.history.length-1]}`);
     }
     $('#calculation-history-list').empty();
-    for (i=calc.history.length-1; i>=0; i--) {
+    for (i=res.history.length-1; i>=0; i--) {
         $('#calculation-history-list').append(`
-                <li data-id="${i}">${calc.history[i]}</li>
+                <li data-id="${i}">${res.history[i]}</li>
         `);
     };
     newCalculationCheck = true;

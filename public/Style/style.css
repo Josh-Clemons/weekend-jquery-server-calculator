@@ -1,14 +1,20 @@
 body {
+    font-family: 'Times New Roman', Times, serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #86b5a2;
+    background-image: url("https://transparenttextures.com/patterns/concrete-wall-2.png");
 }
 
 button {
     width: 50px;
     height: 50px;
+    background-color: white;
 }
-
+button:hover {
+    background-color: gray;
+}
 #calculator-div {
     width: 200px;
     display: flex;
@@ -25,12 +31,14 @@ button {
 }
 
 div#calculator-screen {
+    background-color: white;
     width: 142px;
     height: 35px;
     margin-left: 5px;
     border: 1px solid black;
     padding: 3px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #clear-btn {
@@ -50,5 +58,14 @@ div#calculator-screen {
 
 #clear-history-btn {
     width: 150px;
-    height: 20px;
+    height: 23px;
+}
+
+ul#calculation-history-list {
+    width: 250px;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

@@ -42,7 +42,7 @@ function calculateValue (calc) {
             answer = Number(calc.numberOne) * Number(calc.numberTwo);
             break;
     }
-    return (answer);
+    return (Math.round(answer * 100000000) / 100000000);
 }
 
 app.listen(PORT, () => {
